@@ -3,6 +3,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import MainTab from './MainTab';
 import WriteScreen from './WriteScreen';
 
+const Stack = createNativeStackNavigator();
+
 function RootStack() {
     return (
         <Stack.Navigator>
@@ -13,11 +15,15 @@ function RootStack() {
                     headerShown: false,
                 }}
             />
-            <Stack.Screen name="Write" component={WriteScreen} />
+            <Stack.Screen
+                name="Write"
+                component={WriteScreen}
+                options={{
+                    headerShown: false,
+                }}
+            />
         </Stack.Navigator>
     );
 }
-
-const Stack = createNativeStackNavigator();
 
 export default RootStack;
