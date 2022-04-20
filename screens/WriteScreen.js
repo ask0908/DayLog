@@ -1,32 +1,69 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useContext, useState} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
+import {Alert, KeyboardAvoidingView, Platform, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WriteEditor from '../components/WriteEditor';
 import WriteHeader from '../components/WriteHeader';
 import LogContext from '../contexts/LogContext';
 
-function WriteScreen() {
-    const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
+function WriteScreen({route}) {
+    const log = route.params?.log;
+    const [title, setTitle] = useState(log?.title ?? '');
+    const [body, setBody] = useState(log?.body ?? '');
     const navigation = useNavigation();
 
-    const {onCreate} = useContext(LogContext);
+    // 조회, 수정, 삭제 기능을 Context API를 써서 이 화면에서도 사용할 수 있게 한다
+    const {onCreate, onModify, onRemove} = useContext(LogContext);
+
+    // 저장
     const onSave = () => {
-        onCreate({
-            title,
-            body,
-            // 날짜를 문자열로 변환
-            date: new Date().toISOString(),
-        });
+        if (log) {
+            onModify({
+                id: log.id,
+                date: log.date,
+                title,
+                body,
+            });
+        } else {
+            onCreate({
+                title,
+                body,
+                // 날짜를 문자열로 변환
+                date: new Date().toISOString(),
+            });
+        }
         navigation.pop();
+    };
+
+    // 삭제
+    const onAskRemove = () => {
+        Alert.alert(
+            '삭제',
+            '정말 삭제하시겠어요?',
+            [
+                {text: '취소', style: 'cancel'},
+                {
+                    text: '삭제',
+                    onPress: () => {
+                        onRemove(log?.id);
+                        navigation.pop();
+                    },
+                    style: 'destructive',
+                },
+            ],
+            {cancelable: true},
+        );
     };
     return (
         <SafeAreaView style={styles.block}>
             <KeyboardAvoidingView
                 style={styles.avoidingView}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <WriteHeader onSave={onSave} />
+                <WriteHeader
+                    onSave={onSave}
+                    onAskRemove={onAskRemove}
+                    isEditing={!!log}
+                />
                 <WriteEditor
                     title={title}
                     body={body}

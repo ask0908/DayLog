@@ -1,14 +1,17 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './screens/RootStack';
-import LogContext, {LogContextProvider} from './contexts/LogContext';
+import {LogContextProvider} from './contexts/LogContext';
+import {SearchContextProvider} from './contexts/SearchContext';
 
 function App() {
     return (
         <NavigationContainer>
-            <LogContextProvider>
-                <RootStack />
-            </LogContextProvider>
+            <SearchContextProvider>
+                <LogContextProvider>
+                    <RootStack />
+                </LogContextProvider>
+            </SearchContextProvider>
         </NavigationContainer>
     );
 }

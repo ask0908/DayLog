@@ -1,8 +1,14 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useContext} from 'react';
+import {View, StyleSheet, Text} from 'react-native';
+import SearchContext from '../contexts/SearchContext';
 
-function SearchScreen() {
-    return <View style={styles.block} />;
+function SearchScreen({navigation}) {
+    const {keyword} = useContext(SearchContext);
+    return (
+        <View style={styles.block}>
+            <Text>{keyword}</Text>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
