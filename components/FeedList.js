@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import FeedListItem from './FeedListItem';
 
-function FeedList({logs, onScrolledToBottom}) {
+function FeedList({logs, onScrolledToBottom, ListHeaderComponent}) {
     const onScroll = e => {
         // 함수가 없으면 아무것도 하지 않게 하는 예외처리
         if (!onScrolledToBottom) {
@@ -31,6 +31,7 @@ function FeedList({logs, onScrolledToBottom}) {
             keyExtractor={log => log.id}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             onScroll={onScroll}
+            ListHeaderComponent={ListHeaderComponent}
         />
     );
 }

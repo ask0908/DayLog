@@ -12,12 +12,13 @@ import SearchContext from '../contexts/SearchContext';
 function SearchHeader() {
     const {width} = useWindowDimensions();
     const {keyword, onChangeText} = useContext(SearchContext);
+
     return (
-        // 32를 뺀 이유 : 양 옆에 여백이 16씩 있기 때문
-        <View style={[styles.block, {width: width - 32, height: 24}]}>
+        <View style={[styles.block, {width: width - 32}]}>
             <TextInput
                 style={styles.input}
                 placeholder="검색어를 입력하세요"
+                placeholderTextColor="gray"
                 value={keyword}
                 onChangeText={onChangeText}
                 autoFocus
@@ -28,7 +29,7 @@ function SearchHeader() {
                     pressed && {opacity: 0.5},
                 ]}
                 onPress={() => onChangeText('')}>
-                <Icon name="cancel" color="#9E9E9E" size={20} />
+                <Icon name="cancel" size={20} color="#9e9e9e" />
             </Pressable>
         </View>
     );
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
+        color: 'black',
     },
     button: {
         marginLeft: 8,
